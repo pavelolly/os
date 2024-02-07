@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <time.h>
 
-template<typename Numeric_t>
+template<typename NumT>
 class Matrix {
 public:
     Matrix() : mItems(nullptr), mRows(0), mCols(0)
@@ -17,7 +17,7 @@ public:
             return;
         }
 
-        mItems = new Numeric_t[cols * rows];
+        mItems = new NumT[cols * rows];
         mRows = rows;
         mCols = cols;
 
@@ -36,11 +36,11 @@ public:
             return;
         }
 
-        mItems = new Numeric_t[other.mCols * other.mRows];
+        mItems = new NumT[other.mCols * other.mRows];
         mRows = other.mRows;
         mCols = other.mCols;
 
-        memcpy(mItems, other.mItems, sizeof(Numeric_t) * mCols * mRows);
+        memcpy(mItems, other.mItems, sizeof(NumT) * mCols * mRows);
     }
 
     void clear() {
@@ -64,11 +64,11 @@ public:
             return *this;
         }
 
-        mItems = new Numeric_t[other.mCols * other.mRows];
+        mItems = new NumT[other.mCols * other.mRows];
         mRows = other.mRows;
         mCols = other.mCols;
 
-        memcpy(mItems, other.mItems, sizeof(Numeric_t) * mCols * mRows);
+        memcpy(mItems, other.mItems, sizeof(NumT) * mCols * mRows);
 
         return *this;
     }
@@ -80,37 +80,28 @@ public:
         return mCols;
     }
 
-    Numeric_t& at(size_t i, size_t j) const {
+    NumT& at(size_t i, size_t j) const {
         if (i >= mRows || j >= mCols)
             throw std::out_of_range("invalid indeces to access at matrix");
 
         size_t index = i * mCols + j;
         return mItems[index];
     }
-
-    void print() const {
-        for (size_t i = 0; i < mRows; ++i) {
-            for (size_t j = 0; j < mCols; ++j) {
-                std::cout << std::setw(4) << at(i, j);
-            }
-            std::cout << "\n";
-        }
-    }
 private:
-    Numeric_t* mItems;
+    NumT* mItems;
     size_t mRows;
     size_t mCols;
 };
 
-template<typename Numeric_t>
-Matrix<Numeric_t> matrix_mul(const Matrix<Numeric_t>& A, const Matrix<Numeric_t>& B) {
+template<typename NumT>
+Matrix<NumT> matrix_mul(const Matrix<NumT>& A, const Matrix<NumT>& B) {
     if (!A.rows() || !B.rows()) {
         throw std::invalid_argument("can't multiply empty matrices");
     }
     if (A.cols() != B.rows())
         throw std::invalid_argument("invalid matrix sizes for multiplication");
 
-    Matrix<Numeric_t> res(A.rows(), B.cols(), false);
+    Matrix<NumT> res(A.rows(), B.cols(), false);
     for (size_t i = 0; i < A.rows(); ++i) {
         for (size_t j = 0; j < B.cols(); ++j) {
             res.at(i, j) = 0;
@@ -121,6 +112,16 @@ Matrix<Numeric_t> matrix_mul(const Matrix<Numeric_t>& A, const Matrix<Numeric_t>
     }
 
     return res;
+}
+
+template<typename NumT>
+void matrix_print(const Matrix<NumT>& matrix) {
+    for (size_t i = 0; i < mRows; ++i) {
+        for (size_t j = 0; j < mCols; ++j) {
+            std::cout << std::setw(4) << matrix.at(i, j);
+        }
+        std::cout << "\n";
+    }
 }
 
 int main()

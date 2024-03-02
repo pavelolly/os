@@ -170,18 +170,19 @@ Matrix<NumT> matrix_mul_threaded(const Matrix<NumT>& A, const Matrix<NumT>& B, s
     size_t operations_per_thread = number_elements / number_threads;
     size_t rest_operations = number_elements % number_threads;
 
-    auto multiply = [&res, &A, &B, operations_per_thread, rest_operations](size_t thread_index) {
-        size_t first, second;
+    auto multiply = [&res, &A, &B, operations_per_thread, rest_operations](size_t thread_index)
+        {
+        size_t start, end;
         if (thread_index == 0) {
-            first = 0;
-            second = operations_per_thread + rest_operations;
+            start = 0;
+            end = operations_per_thread + rest_operations;
         }
         else {
-            first = thread_index * operations_per_thread + rest_operations;
-            second = (thread_index + 1) * operations_per_thread + rest_operations;
+            start = thread_index * operations_per_thread + rest_operations;
+            end = (thread_index + 1) * operations_per_thread + rest_operations;
         }
 
-        for (size_t i = first; i < second; ++i) {
+        for (size_t i = start; i < end; ++i) {
             size_t row = i / res.cols();
             size_t col = i % res.cols();
 
@@ -236,13 +237,13 @@ int main()
     //std::cout << "multiplied with single thread in " << 1000.0 * (t2 - t1) / CLOCKS_PER_SEC << "ms" << std::endl;
 
 
-    clock_t t1 = clock();
+    clock_t t3 = clock();
     auto C2 = matrix_mul_threaded(A, B, 12);
-    clock_t t2 = clock();
+    clock_t t4 = clock();
 
     /*matrix_print(C);
     std::cout << "\n";*/
-    std::cout << "multiplied with multiple threads in " << 1000.0 * (t2 - t1) / CLOCKS_PER_SEC << "ms" << std::endl;
+    std::cout << "multiplied with multiple threads in " << 1000.0 * (t4 - t3) / CLOCKS_PER_SEC << "ms" << std::endl;
 
     //std::cout << "both results equal? " << std::boolalpha << (C1 == C2) << std::endl;
 }

@@ -32,37 +32,38 @@ void doCalculationsMany(void (*func)(T&), T& arg) {
 }
 
 int main() {
-	const int threads_count = std::thread::hardware_concurrency();
-	std::vector<std::thread> threads(threads_count);
+	const int THREADS_COUNT = std::thread::hardware_concurrency();
+	std::vector<std::thread> threads(THREADS_COUNT);
 
-	std::cout << "number of threads: " << threads_count << "\n";
-	std::cout << "expected value: " << threads_count * CALCULATIONS_COUNT << "\n";
+	std::cout << "number of threads: " << THREADS_COUNT << "\n";
+	std::cout << "number of calculations per thread: " << CALCULATIONS_COUNT << "\n";
+	std::cout << "expected value: " << THREADS_COUNT * CALCULATIONS_COUNT << "\n";
 
 	int n = 0;
-	for (int i = 0; i < threads_count; ++i) {
+	for (int i = 0; i < THREADS_COUNT; ++i) {
 		threads[i] = std::thread(doCalculationsMany<int>, doCalculations, std::ref(n));
 	}
-	for (int i = 0; i < threads_count; ++i) {
+	for (int i = 0; i < THREADS_COUNT; ++i) {
 		threads[i].join();
 	}
 
 	std::cout << "No mutex, no atomic calculations result: " << n << "\n";
 
 	n = 0;
-	for (int i = 0; i < threads_count; ++i) {
+	for (int i = 0; i < THREADS_COUNT; ++i) {
 		threads[i] = std::thread(doCalculationsMany<int>, doCalculationsMutex, std::ref(n));
 	}
-	for (int i = 0; i < threads_count; ++i) {
+	for (int i = 0; i < THREADS_COUNT; ++i) {
 		threads[i].join();
 	}
 
 	std::cout << "Mutex calculations result: " << n << "\n";
 
 	std::atomic<int> an = 0;
-	for (int i = 0; i < threads_count; ++i) {
+	for (int i = 0; i < THREADS_COUNT; ++i) {
 		threads[i] = std::thread(doCalculationsMany<std::atomic<int>>, doCalculationsAtomic, std::ref(an));
 	}
-	for (int i = 0; i < threads_count; ++i) {
+	for (int i = 0; i < THREADS_COUNT; ++i) {
 		threads[i].join();
 	}
 	

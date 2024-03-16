@@ -365,3 +365,7 @@ FodyWeavers.xsd
 # os/report1 executables
 report1/os*
 !report1/os*.c
+
+# os/report2 executables
+report2/os*
+!report2/os*.c

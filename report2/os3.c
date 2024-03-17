@@ -21,6 +21,6 @@ int main(void) {
 	kill(pid, SIGINT);
    }
 
-   printf("recieved 4 SIGINTS, exiting\n");
+   printf("recieved 4 SIGINTs, exiting\n");
    return 0;
 }

@@ -1,8 +1,6 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <signal.h>
 #include <stdlib.h>
-
 
 void signalhandler(int signal) {
     printf("caught signal %d, exiting...\n", signal);

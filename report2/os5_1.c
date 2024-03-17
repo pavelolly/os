@@ -1,9 +1,8 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <signal.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 const char* filename = "tempfile";
 
@@ -15,7 +14,7 @@ void signalhandler(int _signal) {
 
 int main(void) {
     signal(SIGINT, signalhandler);
-    creat(filename, 0666);
+    creat(filename, 666);
     
     int seconds = 8;
     for (int i = 0; i < seconds; ++i) {

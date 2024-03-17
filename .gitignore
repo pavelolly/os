@@ -369,3 +369,6 @@ report1/os*
 # os/report2 executables
 report2/os*
 !report2/os*.c
+
+report2/book*
+!report2/book*.c

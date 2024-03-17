@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
 
 void signalhandler(int _signal) {
-    printf("caught signal %d, waiting for a name...\n", _signal);
+    printf("\ncaught signal %d, waiting for a name...\n", _signal);
     signal(SIGALRM, signalhandler);
 }
 

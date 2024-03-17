@@ -19,6 +19,6 @@ int main(void) {
 
    while (count != 4) {}
 
-   printf("recieved 4 SIGINTS, exiting\n");
+   printf("recieved 4 SIGINTs, exiting\n");
    return 0;
 }

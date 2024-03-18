@@ -10,7 +10,7 @@ void handler1(int _signal) {
     int olderrno = errno;
     
     // original book example used safe I/O operations 
-    // i hope everything is gonna be fine with standart ones)
+    // (i hope everything is gonna be fine with standart ones)
     if (waitpid(-1, NULL, 0) < 0) {
         printf("waitpid error. aborting...\n");
         abort();

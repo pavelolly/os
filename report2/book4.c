@@ -53,7 +53,7 @@ int main() {
 
     pid = 0;
     while (!pid) {
-    sigsuspend(&prev);
+        sigsuspend(&prev);
     }
 
     sigprocmask(SIG_SETMASK, &prev, NULL);

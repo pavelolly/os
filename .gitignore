@@ -372,3 +372,7 @@ report2/os*
 
 report2/book*
 !report2/book*.c
+
+# os/5-planning executables
+5-planning/*
+!5-planning/*.c

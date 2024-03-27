@@ -7,6 +7,9 @@ typedef struct job {
  int arrival;
  int unblock;
  int exectime;
+ int respons;
+ int turnaround;
+ int wait;
  float ioratio;
  struct job *next;
 } job;
@@ -31,18 +34,18 @@ typedef struct spec{
  {180, 20, 0.3},
 };*/
 
-/*spec specs[] = {
+spec specs[] = {
     {0, 13, 0.0},
     {0, 4, 0.0},
     {0, 1, 0.0}
-};*/
+};
 
-spec specs[] = {
+/*spec specs[] = {
     {0, 5, 0.0},
     {0, 3, 0.0},
     {0, 7, 0.0},
     {0, 1, 0.0}
-};
+};*/
 
 job *readyq = NULL;
 job *blockedq = NULL;
@@ -71,7 +74,7 @@ void ready(job *this){
     job *nxt = readyq;
     job *prev = NULL;
 
-    while (nxt != NULL && nxt->exectime < this->exectime) {
+    while (nxt != NULL) {
         prev = nxt;
         nxt = nxt->next;
     }
@@ -107,48 +110,89 @@ void init() {
         new->id = i + 1;
         new->arrival = specs[i].arrival;
         new->unblock = specs[i].arrival;
-        new->exectime = specs[i].exectime ;
+        new->exectime = specs[i].exectime;
+        new->respons = -1;
+        new->turnaround = 0;
+        new->wait = 0;
         new->ioratio = specs[i].ioratio;
         
         block(new);
     }
 }
 
-int schedule(int time){
+int schedule(int time, int slot){
     if (readyq != NULL){
         job *nxt = readyq;
         readyq = readyq->next;
 
-        int exect = nxt->exectime;
-        nxt->exectime = 0;
-        printf("(%4d) run job %2d for %3d ms\n", time, nxt->id, exect);
+        if (nxt->respons == -1) {
+            // printf("for job %d: time: %d, arrival: %d, respons: %d\n", nxt->id, time, nxt->arrival, time - nxt->arrival);
+            nxt->respons = time - nxt->arrival;
+            nxt->wait = nxt->respons;
+        }
+
+        int left = nxt->exectime;
+        int exect = (left < slot) ? left : slot;
+
+        job *readynxt = readyq;
+        while (readynxt) {
+            if (readynxt->respons != -1) {
+                readynxt->wait += exect;
+            }
+            readynxt = readynxt->next;
+        }
         
-        done(nxt);
+        nxt->exectime -= exect;
+        printf("(%4d) run job %2d for %3d ms", time, nxt->id , exect);
+        
+        if (nxt->exectime == 0){
+            nxt->turnaround = time + exect - nxt->arrival;
+            printf(" = done\n");
+            done(nxt);
+        } else {
+            ready (nxt);
+            printf(" =%3d left \n", nxt->exectime);
+        }
         return exect;
     }
     else return 1;
 }
 
-int main(){
-    init();
-    int time = 0;
-    float tt = 0, wt = 0;
-    while (blockedq != NULL || readyq != NULL){
-        unblock(time);
-        
-        wt += time;
-
-        int tick = schedule(time);
-        time += tick;
-
-        tt += time;
+int main(int argc, char *argv[]) {
+    int slot = 10;
+    if (argc == 2) {
+        slot = atoi(argv[1]);
     }
 
-    wt /= ARRAY_LEN(specs);
-    tt /= ARRAY_LEN(specs);
+    init();
+    int time = 0;
+    while (blockedq != NULL || readyq != NULL){
+        unblock(time);
+
+        int tick = schedule(time, slot);
+        time += tick;
+    }
+
+    float tt = 0, rt = 0, wt = 0;
+    int count = 0;
+    job *nxt = doneq;
+    while (nxt) {
+        tt += nxt->turnaround;
+        rt += nxt->respons;
+        wt += nxt->wait;
+        ++count;
+
+        // printf("job: %d, respons: %d\n", nxt->id, nxt->respons);
+        
+        nxt = nxt->next;
+    }
+    tt /= count;
+    rt /= count;
+    wt /= count;
 
     printf("\n total execution time is %d \n", time);
     printf(" average exec time (tt): %f\n", tt);
+    printf(" average response time: %f\n", rt);
     printf(" average wait time (wt): %f\n", wt);
     return 0;
 }

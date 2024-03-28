@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "semaphore", "semaphore.vcxproj", "{B77B98F7-00A3-48A3-9E45-615504D4DB22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B77B98F7-00A3-48A3-9E45-615504D4DB22}.Debug|x64.ActiveCfg = Debug|x64
+		{B77B98F7-00A3-48A3-9E45-615504D4DB22}.Debug|x64.Build.0 = Debug|x64
+		{B77B98F7-00A3-48A3-9E45-615504D4DB22}.Debug|x86.ActiveCfg = Debug|Win32
+		{B77B98F7-00A3-48A3-9E45-615504D4DB22}.Debug|x86.Build.0 = Debug|Win32
+		{B77B98F7-00A3-48A3-9E45-615504D4DB22}.Release|x64.ActiveCfg = Release|x64
+		{B77B98F7-00A3-48A3-9E45-615504D4DB22}.Release|x64.Build.0 = Release|x64
+		{B77B98F7-00A3-48A3-9E45-615504D4DB22}.Release|x86.ActiveCfg = Release|Win32
+		{B77B98F7-00A3-48A3-9E45-615504D4DB22}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {81C8153E-5D1E-4D71-BE56-20986752BD01}
+	EndGlobalSection
+EndGlobal

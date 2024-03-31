@@ -377,5 +377,9 @@ report2/book*
 5-planning/*
 !5-planning/*.c
 
+# os/threading executables
+threading/*
+!threading/*.c
+
 # vscode
 .vscode/

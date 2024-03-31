@@ -7,9 +7,9 @@
 
 static int running;
 
-static ucontex_t cntx_one;
-static ucontex_t cntx_two;
-static ucontex_t cntx_main;
+static ucontext_t cntx_one;
+static ucontext_t cntx_two;
+static ucontext_t cntx_main;
 
 static int done1;
 static int done2;
@@ -75,13 +75,13 @@ int main() {
     getcontext(&cntx_one);
     cntx_one.uc_stack.ss_sp = stack1;
     cntx_one.uc_stack.ss_size = sizeof stack1;
-    cntx_one.uclink = &cntx_done;
+    cntx_one.uc_link = &cntx_done;
     makecontext(&cntx_one, (void (*)(void))push, 2, 1, 1);
 
     getcontext(&cntx_two);
     cntx_two.uc_stack.ss_sp = stack2;
     cntx_two.uc_stack.ss_size = sizeof stack2;
-    cntx_two.uclink = &cntx_done;
+    cntx_two.uc_link = &cntx_done;
     makecontext(&cntx_two, (void (*)(void))push, 2, 2, 1);
 
     getcontext(&cntx_done);

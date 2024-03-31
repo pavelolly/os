@@ -7,9 +7,9 @@
 
 static int running;
 
-static ucontex_t cntx_one;
-static ucontex_t cntx_two;
-static ucontex_t cntx_main;
+static ucontext_t cntx_one;
+static ucontext_t cntx_two;
+static ucontext_t cntx_main;
 
 void yield() {
     printf(" -yield-\n");
@@ -50,5 +50,6 @@ int main() {
     makecontext(&cntx_two, (void (*)(void))push, 2, 2, 1);
     running = 1;
     swapcontext(&cntx_main, &cntx_one);
+
     return 0;
 }

@@ -38,7 +38,6 @@ int main() {
     char stack1[8 * 1024];
     char stack2[8 * 1024];
     
-    // The first context.
     getcontext(&cntx_one);
     cntx_one.uc_stack.ss_sp = stack1;
     cntx_one.uc_stack.ss_size = sizeof stack1;

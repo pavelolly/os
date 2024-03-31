@@ -3,7 +3,7 @@
 #include <ucontext.h>
 
 
-#define MAX 10
+#define MAX 4
 
 static int running;
 
@@ -30,6 +30,7 @@ void yield() {
 void push(int p, int i) {
     if (i < MAX) {
         printf("%d%*s push\n", p, i, " ");
+        yield();
         push(p, i + 1);
         printf("%d%*s pop\n", p, i, " ");
     }
@@ -71,7 +72,6 @@ int main() {
     char stack2[8 * 1024];
     char stack_done[8 * 1024];
 
-    // The first context.
     getcontext(&cntx_one);
     cntx_one.uc_stack.ss_sp = stack1;
     cntx_one.uc_stack.ss_size = sizeof stack1;

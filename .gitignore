@@ -380,6 +380,7 @@ report2/book*
 # os/threading executables
 threading/*
 !threading/*.c
+!threading/report3.odt
 
 # vscode
 .vscode/

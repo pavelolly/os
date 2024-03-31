@@ -376,3 +376,6 @@ report2/book*
 # os/5-planning executables
 5-planning/*
 !5-planning/*.c
+
+# vscode
+.vscode/

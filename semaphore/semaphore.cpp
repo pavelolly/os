@@ -1,44 +1,34 @@
-﻿
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <thread>
-#include <semaphore>
+#include <Windows.h>
 
-std::binary_semaphore semaphore(0);
 
-void readLoop() {
+HANDLE semaphore;
+
+void Write() {
+    char buffer[256];
     while (true) {
-        // std::cout << "[INFO] Entered read loop\n" << std::flush;
-        semaphore.acquire();
-        // std::cout << "[INFO] Acqiured from read loop\n" << std::flush;
+        std::cin >> buffer;
+        std::cout << " > got input: " << buffer << std::endl;
+        ReleaseSemaphore(semaphore, 1, NULL);
+    }
+}
 
-        char buf[256] = { 0 };
-        std::ifstream in("msg");
-
-        in.read(buf, 256);
-        in.close();
-
-        std::cout << buf << std::endl;
+void Read() {
+    while (true) {
+        WaitForSingleObject(semaphore, INFINITE);
+        std::cout << " > fetched data from file" << std::endl;
     }
 }
 
 int main() {
-    std::thread thread_read(readLoop);
+    semaphore = CreateSemaphore(NULL, 0, 1, L"Semaphore");
+    std::thread WriteThread(Write);
+    std::thread ReadThread(Read);
 
-    while (true) {
-        // std::cout << "[INFO] Entered write loop\n" << std::flush;
-
-        char buf[256] = { 0 };
-        std::ofstream out("msg");
-
-        std::cin >> buf;
-
-        out << buf;
-        out.close();
-
-        semaphore.release();
-        // std::cout << "[INFO] Released from write loop\n" << std::flush;
-    }
+    WriteThread.join();
+    ReadThread.join();
 
     return 0;
 }

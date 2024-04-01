@@ -217,7 +217,7 @@ void matrix_print(const Matrix<NumT>& matrix) {
 
 int main()
 {   
-    size_t n = 2500;
+    size_t n = 1000;
     Matrix<int> A(n, n);
     Matrix<int> B(n, n);
     std::cout << "initialized" << std::endl;
@@ -228,13 +228,13 @@ int main()
     matrix_print(B);
     std::cout << "\n";*/
 
-    //clock_t t1 = clock();
-    //auto C1 = matrix_mul(A, B);
-    //clock_t t2 = clock();
+    clock_t t1 = clock();
+    auto C1 = matrix_mul(A, B);
+    clock_t t2 = clock();
 
-    ///*matrix_print(C);
-    //std::cout << "\n";*/
-    //std::cout << "multiplied with single thread in " << 1000.0 * (t2 - t1) / CLOCKS_PER_SEC << "ms" << std::endl;
+    /*matrix_print(C);
+    std::cout << "\n";*/
+    std::cout << "multiplied with single thread in " << 1000.0 * (t2 - t1) / CLOCKS_PER_SEC << "ms" << std::endl;
 
 
     clock_t t3 = clock();

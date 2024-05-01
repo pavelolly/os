@@ -160,7 +160,10 @@ int main(int argc, char* argv[]) {
 		WaitForSingleObject(process2.hProcess, INFINITE);
 
 		CloseHandle(process1.hProcess);
+		CloseHandle(process1.hThread);
+
 		CloseHandle(process2.hProcess);
+		CloseHandle(process2.hThread);
 	}
 	else {
 		int proccess_number = atoi(argv[1]);

@@ -384,3 +384,6 @@ threading/*
 
 # vscode
 .vscode/
+
+# msg file created by semaphore project
+msg
